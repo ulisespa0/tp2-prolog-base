@@ -73,7 +73,22 @@ color(T, Color, Coordenada) :-
 
 % tableroConPosiciónLiberada(+Tablero, +Coordenada, -TableroLiberado)
 % Precondición: esMatriz(Tablero), coordenadaEnRango(Tablero, Coordenada), not(libre(Tablero, Coordenada)).
-tableroConPosiciónLiberada(_, _, _) :- completar("Ejercicio 4.a").
+tableroConPosiciónLiberada([], _, []).
+tableroConPosiciónLiberada([Fila|Xs], (1, ColumnaC), [FilaLib|Xs]) :-  
+  %caso fila correcta
+  auxCopiarListaMenosUno(Fila, ColumnaC, FilaLib).
+tableroConPosiciónLiberada([Fila|Xs], (FilaC, ColumnaC), [Fila|Xss]) :- FilaC \= 1,
+  %caso en el que no estoy en la fila correcta
+  FilaCC is FilaC-1,  
+  tableroConPosiciónLiberada(Xs,(FilaCC,ColumnaC),Xss).
+
+%auxCopiarListaMenosUno(+Lista, +indice, -NeoLista)
+
+auxCopiarListaMenosUno([_|Xs], 1, [libre|Xs]).
+auxCopiarListaMenosUno([X|Xs], N, [X|Ys]) :- 
+    N > 1, 
+    RecN is N-1, 
+    auxCopiarListaMenosUno(Xs, RecN, Ys).
 
 % ----------------
 % Ejercicio 4.b)
@@ -82,7 +97,10 @@ tableroConPosiciónLiberada(_, _, _) :- completar("Ejercicio 4.a").
 % tableroConPosicionesLiberadas(+Tablero, +Posiciones, -TableroLiberado)
 % Precondición: esMatriz(Tablero).
 % Precondición: para cada Coordenada en Posiciones: coordenadaEnRango(Tablero, Coordenada), not(libre(Tablero, Coordenada)).
-tableroConPosicionesLiberadas(_, _, _) :- completar("Ejercicio 4.b").
+tableroConPosicionesLiberadas(Tablero, [], Tablero).
+tableroConPosicionesLiberadas(Tablero, [Pos|Xs], TableroLiberado) :- 
+  tableroConPosiciónLiberada(Tablero, Pos, TableroUnCambio),
+  tableroConPosicionesLiberadas(TableroUnCambio, Xs, TableroLiberado).
 
 % ----------------
 % Operaciones sobre coordenadas.
