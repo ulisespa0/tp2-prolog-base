@@ -1,0 +1,1 @@
+[[libre,libre,azul,rojo],[azul,libre,azul,rojo],[verde,libre,azul,verde],[libre,libre,libre,rojo]]
