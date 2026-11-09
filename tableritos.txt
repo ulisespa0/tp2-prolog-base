@@ -1,1 +1,7 @@
-[[libre,libre,azul,rojo],[azul,libre,azul,rojo],[verde,libre,azul,verde],[libre,libre,libre,rojo]]
+[[libre,libre,azul,rojo],
+[azul,libre,azul,rojo],
+[verde,libre,azul,verde],
+[libre,libre,libre,rojo]]
+
+[rojo,libre,rojo],
+[verde,libre,verde]

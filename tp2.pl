@@ -238,6 +238,7 @@ jugadaPosible(T, (I, J)) :-
 % jugarPosición(+TableroInicial, +Coordenada, -TableroResultante)
 % Precondición: esMatriz(TableroInicial), coordenadaEnRango(TableroInicial, Coordenada), libre(TableroInicial, Coordenada).
 jugarPosición([], _, []).
+
 jugarPosición(Tablero, C, TableroNuevo) :- 
     %Caso un solo color disponible 
     coloresPredominantes(Tablero, C, Colores, HacerLibre),
@@ -259,9 +260,9 @@ jugarPosición(Tablero, C, TableroNuevo) :-
 % jugarPosiciones(+TableroInicial, +Jugadas, -TableroResultante)
 % Precondición: esMatriz(TableroInicial).
 % Precondición: para cada Coordenada en Jugadas: coordenadaEnRango(TableroInicial, Coordenada).
-jugarPosiciones(Tablero, _, Tablero).
-jugarPosiciones(Tablero, [jug|Xs], NTablero):-
-    jugarPosición(Tablero, jug, TableroUnaJugada),
+jugarPosiciones(Tablero, [], Tablero).
+jugarPosiciones(Tablero, [Jug|Xs], NTablero):-
+    jugarPosición(Tablero, Jug, TableroUnaJugada),
     jugarPosiciones(TableroUnaJugada, Xs, NTablero).
 
 
@@ -280,7 +281,15 @@ jugarNaive(T, TF) :-
 
 % jugadasNaive(+Tablero, -Jugadas)
 % Precondición: esMatriz(Tablero).
-jugadasNaive(_, _) :- completar("Ejercicio 6.b").
+jugadasNaive(T, []) :- not(jugadaPosible(T, _)).
+jugadasNaive(Tablero, Jugadas) :- 
+    bagof((X,Y), jugadaPosible(Tablero, (X,Y)), Ju),
+    reverse(Ju, Rejuv),
+    last(Rejuv, Ultima),
+    jugarPosición(Tablero, Ultima, ResTablero),
+    jugadasNaive(ResTablero, RecJugadas),  
+    append([Ultima], RecJugadas, Jugadas).
+
 
 % ----------------
 % Ejercicio 7.a)
@@ -289,7 +298,12 @@ jugadasNaive(_, _) :- completar("Ejercicio 6.b").
 % victoriaConJugadas(+Tablero, +Jugadas).
 % Precondición: esMatriz(Tablero).
 % Precondición: para cada Coordenada en Jugadas: coordenadaEnRango(Tablero, Coordenada).
-victoriaConJugadas(_, _) :- completar("Ejercicio 7.a").
+victoriaConJugadas(Tablero, Jugadas) :- jugarPosiciones(Tablero, Jugadas, Res), todasLibres(Res).
+
+todasLibres(Tablero) :- 
+    flatten(Tablero, T), lineaLibre(T).
+lineaLibre([]).
+lineaLibre([libre|Xs]) :- lineaLibre(Xs). 
 
 % ----------------
 % Ejercicio 7.b)
@@ -358,6 +372,16 @@ tablero(3, [
   [libre, libre, libre, libre],
   [libre, libre, libre, libre],
   [libre, libre, libre, libre]
+]).
+tablero(4, [
+  [rojo,libre,rojo],
+  [verde,libre,verde]
+]).
+tablero(5, [
+  [rojo, azul, libre, azul, rojo],
+  [libre, libre, libre, libre, libre],
+  [libre, libre, libre, libre, libre],
+  [libre, libre, libre, libre, libre]
 ]).
 
 % Indica que se debe completar el predicado. Siempre falla.
