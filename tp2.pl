@@ -282,14 +282,19 @@ jugarNaive(T, TF) :-
 % jugadasNaive(+Tablero, -Jugadas)
 % Precondición: esMatriz(Tablero).
 jugadasNaive(T, []) :- not(jugadaPosible(T, _)).
-jugadasNaive(Tablero, Jugadas) :- 
-    bagof((X,Y), jugadaPosible(Tablero, (X,Y)), Ju),
-    reverse(Ju, Rejuv),
-    last(Rejuv, Ultima),
-    jugarPosición(Tablero, Ultima, ResTablero),
-    jugadasNaive(ResTablero, RecJugadas),  
-    append([Ultima], RecJugadas, Jugadas).
+jugadasNaive(Tablero, [J|Jugadas]):-
+    jugadaPosible(Tablero, J), jugarPosición(Tablero,J,TNuevo),
+    jugadasNaive(TNuevo, Jugadas).
 
+%jugadasNaive(Tablero, Jugadas) :- 
+%    bagof((X,Y), jugadaPosible(Tablero, (X,Y)), Ju),
+%    reverse(Ju, Rejuv),
+%    last(Rejuv, Ultima),
+%    jugarPosición(Tablero, Ultima, ResTablero),
+%    jugadasNaive(ResTablero, RecJugadas),  
+%   append([Ultima], RecJugadas, Jugadas).
+
+     
 
 % ----------------
 % Ejercicio 7.a)
@@ -302,6 +307,7 @@ victoriaConJugadas(Tablero, Jugadas) :- jugarPosiciones(Tablero, Jugadas, Res), 
 
 todasLibres(Tablero) :- 
     flatten(Tablero, T), lineaLibre(T).
+
 lineaLibre([]).
 lineaLibre([libre|Xs]) :- lineaLibre(Xs). 
 
@@ -311,7 +317,8 @@ lineaLibre([libre|Xs]) :- lineaLibre(Xs).
 
 % juegoNaiveVictorioso(+Tablero, -Jugadas)
 % Precondición: esMatriz(Tablero).
-juegoNaiveVictorioso(_, _) :- completar("Ejercicio 7.b").
+%juegoNaiveVictorioso(_, _) :- completar("Ejercicio 7.b").
+juegoNaiveVictorioso(Tablero, Jugadas):- jugadasNaive(Tablero,Jugadas), victoriaConJugadas(Tablero,Jugadas).  
 
 % ----------------
 % Ejercicio 7.c)
