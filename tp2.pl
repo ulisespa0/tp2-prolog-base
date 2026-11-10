@@ -317,7 +317,7 @@ lineaLibre([libre|Xs]) :- lineaLibre(Xs).
 
 % juegoNaiveVictorioso(+Tablero, -Jugadas)
 % Precondición: esMatriz(Tablero).
-%juegoNaiveVictorioso(_, _) :- completar("Ejercicio 7.b").
+% juegoNaiveVictorioso(_, _) :- completar("Ejercicio 7.b").
 juegoNaiveVictorioso(Tablero, Jugadas):- jugadasNaive(Tablero,Jugadas), victoriaConJugadas(Tablero,Jugadas).  
 
 % ----------------
@@ -326,14 +326,19 @@ juegoNaiveVictorioso(Tablero, Jugadas):- jugadasNaive(Tablero,Jugadas), victoria
 
 % mejorJuegoNaive(+Tablero, -Jugadas)
 % Precondición: esMatriz(Tablero).
-mejorJuegoNaive(_, _) :- completar("Ejercicio 7.c").
+% mejorJuegoNaive(_, _) :- completar("Ejercicio 7.c").
+% mejorJuegoNaive(Tablero, Jugadas) :- juegoNaiveVictorioso(Tablero, Jugadas),
+% length(Jugadas,N), not((mejorJuegoNaive(Tablero, J), length(J,M), M<N)).
+mejorJuegoNaive(Tablero, Jugadas) :- findall(J, juegoNaiveVictorioso(Tablero, J), JuegosPosibles),
+member(Jugadas, JuegosPosibles), length(Jugadas,N),
+not((member(OtraJugada, JuegosPosibles), length(OtraJugada,M), M<N)).
 
 % ----------------
 % Ejercicio 8 - OPCIONAL
 % ----------------
 
 % tableroEnElQueNaiveGanaEmpezandoPor(-Tablero, +Coordenada)
-tableroEnElQueNaiveGanaEmpezandoPor(_, _) :- completar("Ejercicio 8").
+% tableroEnElQueNaiveGanaEmpezandoPor(_, _) :- completar("Ejercicio 8").
 
 % ----------------
 % Interfaz gráfica
