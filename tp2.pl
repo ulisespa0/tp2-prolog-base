@@ -339,6 +339,15 @@ not((member(OtraJugada, JuegosPosibles), length(OtraJugada,M), M<N)).
 
 % tableroEnElQueNaiveGanaEmpezandoPor(-Tablero, +Coordenada)
 % tableroEnElQueNaiveGanaEmpezandoPor(_, _) :- completar("Ejercicio 8").
+%tableroEnELQueNaiveGanaEmpezandoPor(Tablero, Coordenada) :- generarTableroApartir(T,Coordenada), juegoNaiveVictorioso(T, [Coordenada|RestoJugadas]).
+
+% generarTablero(-T, +(F,C))
+%generarTablero(T,(F,C)):- desde(F,X), desde(C,Y), %se cuelga, deberia cubrir todas las combinaciones a partir
+%generarMatriz(T,F,C), valorEnCoordenada(T,Coordenada,Valor), libre(T,(F,C)).
+
+
+%generarMatriz([Columna|Filas],F,C):- length([Columna|Filas],F), maplist(length(Columna,C), [Columna|Filas]).
+
 
 % ----------------
 % Interfaz gráfica
